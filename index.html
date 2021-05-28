@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/jpg" href="/favicon.png"/>
+    <title>Can I visit NZ yet?</title>
+
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100&display=swap');
+        body{
+            background-color: black;
+            display: flex;
+            flex-direction: column;
+            place-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            padding:0;
+        }
+
+        .container{
+            display: flex;
+            flex-direction: column;
+            place-items: center;
+            min-height: fit-content;
+        }
+        h1,p,a{
+            text-decoration: none;
+            color:white;
+            font-family: 'Noto Sans SC', sans-serif;
+            margin: 0;
+            padding:0;
+            text-align: center;
+        }
+        #headding{
+            font-size: clamp(2rem, 2vw,10rem); 
+        }
+
+        #answer{
+            font-size: clamp(3rem, 5vw,10rem); 
+            font-weight: bold;
+        }
+
+        a:hover,a:focus{
+            background-color: white;
+            color: black;
+            border-radius: 10%;
+        }
+    </style>
+
+    <script>
+        //Gets the infomation from the travelbriefing API 
+        async function apiData(){
+            var CanIGo;
+            const Response= await fetch("https://travelbriefing.org/NZ?format=json");
+            var {advise:{CA:{advise}}}=await Response.json();
+            //Dont know if this is the only valid response 
+            if(String(advise).split(RegExp("\>(.*?)\<"))[1] == "Avoid non-essential travel"){
+                document.getElementById("answer").innerHTML="No";
+            }
+            else{
+                document.getElementsByClassName("answer").value="Yes";
+            }
+        }
+        //Call function on webpage load
+        window.onload=apiData();
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 id="headding">Can I visit New Zealand yet?</h1>
+        <p id="answer"></p>
+        <p id ="infomation">For more info please click <a href="https://www.gov.uk/foreign-travel-advice/new-zealand/coronavirus">Here</a></p>
+    </div>
+    
+</body>
+</html>
